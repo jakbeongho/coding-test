@@ -1,13 +1,16 @@
 class Solution {
     public String solution(int[] food) {
-        String answer = "0";
+        StringBuilder answer = new StringBuilder();
+        StringBuilder halfAnswer = new StringBuilder();
 
-        for (int i = food.length - 1; i > 0; i--) {
+        for (int i = 1; i < food.length; i++) {
             for (int j = 0; j < food[i] / 2; j++) {
-                answer = i + answer + i; 
+                halfAnswer.append(i);
             }
         }
 
-        return answer;
+        answer.append(halfAnswer).append("0").append(halfAnswer.reverse());
+
+        return answer.toString();
     }
 }
