@@ -1,23 +1,20 @@
-import java.util.ArrayList;
-import java.util.List;
-
 class Solution {
     public String[] solution(String[] picture, int k) {
-            List<String> tmpList = new ArrayList<>();
-           
-            for (int i = 0; i < picture.length; i++) {
-                
-                String[] enlarge = picture[i].split("");
-                String str = "";
-                
-                for (int j = 0; j < enlarge.length; j++) {
-                    str += enlarge[j].repeat(k);
+        String[] answer = new String[picture.length * k];
+        int idx = 0;
+
+        for(int i=0; i<picture.length; i++) {
+            for(int j=0; j<k; j++) {
+                StringBuilder sb = new StringBuilder();
+
+                for(int l=0; l<picture[i].length(); l++) {
+                    sb.append(String.valueOf(picture[i].charAt(l)).repeat(k));
                 }
-                for (int j = 0; j < k; j++) {
-                    tmpList.add(str);
-                }
+
+                answer[idx++] = sb.toString();
             }
-         
-            return tmpList.toArray(new String[tmpList.size()]);
-        }   
+        }
+
+        return answer;
+    }
 }
