@@ -1,7 +1,6 @@
 class Solution {
     public String solution(String s) {
-       
-        
+     
         String tmp =s.toLowerCase();       
         
         char[] charArray = tmp.toCharArray();
@@ -21,9 +20,7 @@ class Solution {
             else{
                 uppercase= false;
             }
-            
-            
-            
+                 
         }
         
         String answer = new String(charArray);
