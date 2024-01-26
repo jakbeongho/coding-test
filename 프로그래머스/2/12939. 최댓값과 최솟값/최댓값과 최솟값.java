@@ -1,25 +1,19 @@
+import java.util.Arrays;
+
 class Solution {
-    public String solution(String s) {
-        String answer = "";
-        
-        String[] tmp = s.split(" ");
-        
-        int max=Integer.parseInt(tmp[0]);
-        int min=Integer.parseInt(tmp[0]);
-        
-        for(int i=0;i<tmp.length;i++){
-            if(max< Integer.parseInt(tmp[i])){
-                max = Integer.parseInt(tmp[i]);
-            }
-            
-            if(min>Integer.parseInt(tmp[i])){
-                min = Integer.parseInt(tmp[i]);
-            }
-            
+    public String solution(String str) {
+         String[] array = str.split(" ");
+        int[] arrayInt = new int[array.length];
+
+        for (int i = 0; i < arrayInt.length; i++) {
+            arrayInt[i] = Integer.parseInt(array[i]);
         }
-        
-        answer = min + " " + max;
-        
-        return answer;
+
+        Arrays.sort(arrayInt);
+        String result = arrayInt[0] + " " + arrayInt[arrayInt.length - 1];
+
+        return result;
+
+    
     }
 }
