@@ -1,44 +1,51 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 class Solution {
-    public int[] solution(int N, int[] stages) {
-   
-        Arrays.sort(stages);
-        
-        Map<Integer,Double> tmp = new HashMap<>();
-        
-        int challenger = stages.length;
-        int fail = 0;
-        int stage = stages[0];
-        
-        for(int i=1;i<=N;i++){
-            tmp.put(i,(double)0.0);
+    public int[] solution(int N, int[] lastStages) {
+        int nPlayers = lastStages.length;
+        int[] nStagePlayers = new int[N + 2];
+        for (int stage : lastStages) {
+            nStagePlayers[stage] += 1;
         }
-        
-        for(int i=0;i<stages.length;i++){
-            
-            if(stages[i]>stage){
-                tmp.put(stage,(double)fail/challenger);
-                System.out.println((double)fail/challenger);
-                stage=stages[i];
-                challenger -= fail;
-                fail = 0;
-            }
-            fail++;  
-        }
-        
-        if(stages[stages.length-1]==stage && stage <= N){
-            tmp.put(stage,(double)fail/challenger);
-        }
-        
-        List<Map.Entry<Integer, Double>> entryList = new ArrayList<>(tmp.entrySet());
-        Collections.sort(entryList, Map.Entry.comparingByValue(Comparator.reverseOrder()));
 
-        int[] answer = new int[entryList.size()];
-        for (int i = 0; i < entryList.size(); i++) {
-            answer[i] = entryList.get(i).getKey();
+        int remainingPlayers = nPlayers;
+        List<Stage> stages = new ArrayList<>();
+        for (int id = 1 ; id <= N; id++) {
+            double failure = (double) nStagePlayers[id] / remainingPlayers;
+            remainingPlayers -= nStagePlayers[id];
+
+            Stage s = new Stage(id, failure);
+            stages.add(s);
         }
-        
+        Collections.sort(stages, Collections.reverseOrder());
+
+        int[] answer = new int[N];
+        for (int i = 0; i < N; i++) {
+            answer[i] = stages.get(i).id;
+        }
         return answer;
+    }
+
+    class Stage implements Comparable<Stage> {
+        public int id;
+        public double failure;
+
+        public Stage(int id_, double failure_) {
+            id = id_;
+            failure = failure_;
+        }
+
+        @Override
+        public int compareTo(Stage o) {
+            if (failure < o.failure ) {
+                return -1;
+            }
+            if (failure > o.failure ) {
+                return 1;
+            }
+            return 0;
+        }
     }
 }
