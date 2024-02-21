@@ -2,32 +2,24 @@ import java.util.*;
 
 class Solution {
     public int solution(int k, int[] tangerine) {
-        int answer = 1;
-        
-        Map<Integer, Integer> gyul = new HashMap<>();
-        
-        for (int i = 0; i < tangerine.length; i++) {
-            gyul.put(tangerine[i], gyul.getOrDefault(tangerine[i], 0) + 1);
-        }    
-        
-        List<Map.Entry<Integer, Integer>> gyulList = new ArrayList<>(gyul.entrySet());
+        int answer = 0;
+        HashMap<Integer,Integer> map =new HashMap<>();
 
-        gyulList.sort(Collections.reverseOrder(Map.Entry.comparingByValue())); 
+        for (int t : tangerine) {
+            map.put(t, map.getOrDefault(t, 0) + 1);
+        }
 
-        for (Map.Entry<Integer, Integer> entry : gyulList) {
-       
-            int gyulCount = entry.getValue();
-            
-            if(k>gyulCount){
-                k = k-gyulCount;
-                answer++;
-            }
-            else{
+        List<Integer> list = new ArrayList<>(map.keySet());
+        list.sort((o1, o2) -> map.get(o2)-map.get(o1));
+
+        for(Integer key:list){
+            k -=map.get(key);
+            answer++;
+            if(k<=0){
                 break;
             }
-        
         }
-        
+
         return answer;
     }
 }
