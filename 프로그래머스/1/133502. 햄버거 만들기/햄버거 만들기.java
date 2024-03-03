@@ -1,35 +1,18 @@
-import java.util.Stack;
-
 class Solution {
     public int solution(int[] ingredient) {
+        int[] stack = new int[ingredient.length];
+        int sp = 0;
         int answer = 0;
-        Stack<Integer> burgerStack = new Stack<>();
-
-        int[] recipe = {1, 2, 3, 1};
-        
-        for (int i = 0; i < ingredient.length; i++) {
-            burgerStack.push(ingredient[i]); 
-            
-            if (burgerStack.size() >= recipe.length) {
-                
-                boolean make = true;
-
-                for (int j = 0; j < recipe.length; j++) {
-                    if (burgerStack.get(burgerStack.size() - recipe.length + j) != recipe[j]) {
-                        make = false;
-                        break;
-                    }
-                }
-
-                if (make) {
-                    for (int j = 0; j < recipe.length; j++) {
-                       burgerStack.pop();
-                    }
-                    answer++;
-                }
+        for (int i : ingredient) {
+            stack[sp++] = i;
+            if (sp >= 4 && stack[sp - 1] == 1
+                && stack[sp - 2] == 3
+                && stack[sp - 3] == 2
+                && stack[sp - 4] == 1) {
+                sp -= 4;
+                answer++;
             }
         }
-
         return answer;
     }
 }
