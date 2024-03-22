@@ -1,30 +1,16 @@
-import java.util.Arrays;
-import java.util.Set;
-import java.util.HashSet;
-
+import java.util.*;
 class Solution {
     public int[] solution(String s) {
-       
-        String[] firstArray = s.replaceAll("\\{\\{|\\}\\}", "").split("\\},\\{");
-        
-        int[] answer = new int[firstArray.length];
-        
-        Set<Integer> check = new HashSet<>();
-        
-        Arrays.sort(firstArray, (s1, s2) -> Integer.compare(s1.length(), s2.length()));
-        
-        for(int i=0;i<firstArray.length;i++){
-            
-            String[] secondArray = firstArray[i].split(",");
-            
-            for(int j=0;j<secondArray.length;j++){
-                if(check.add(Integer.parseInt(secondArray[j]))){
-                    answer[i] = Integer.parseInt(secondArray[j]);
-                    break;
-                }
+        Set<String> set = new HashSet<>();
+        String[] arr = s.replaceAll("[{]", " ").replaceAll("[}]", " ").trim().split(" , ");
+        Arrays.sort(arr, (a, b)->{return a.length() - b.length();});
+        int[] answer = new int[arr.length];
+        int idx = 0;
+        for(String s1 : arr) {
+            for(String s2 : s1.split(",")) {
+                if(set.add(s2)) answer[idx++] = Integer.parseInt(s2);
             }
         }
-        
         return answer;
     }
 }
