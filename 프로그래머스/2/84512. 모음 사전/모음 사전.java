@@ -1,7 +1,13 @@
+import java.util.*;
 class Solution {
+    List<String> list = new ArrayList<>();
+    void dfs(String str, int len) {
+        if(len > 5) return;
+        list.add(str);
+        for(int i = 0; i < 5; i++) dfs(str + "AEIOU".charAt(i), len + 1);
+    }
     public int solution(String word) {
-        int answer = 0, per = 3905;
-        for(String s : word.split("")) answer += "AEIOU".indexOf(s) * (per /= 5) + 1;
-        return answer;
+        dfs("", 0);
+        return list.indexOf(word);
     }
 }
