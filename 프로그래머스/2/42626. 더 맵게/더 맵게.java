@@ -1,31 +1,24 @@
-import java.util.Arrays;
-import java.util.PriorityQueue;
-
+import java.util.*;
 class Solution {
     public int solution(int[] scoville, int K) {
-        int answer = 0;
-        
-        PriorityQueue<Integer> queue = new PriorityQueue<>();
-        
-        for (int s : scoville) {
-            queue.add(s);
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+
+        for(int i = 0; i < scoville.length; i++)
+            q.add(scoville[i]);
+
+        int count = 0;
+        while(q.size() > 1 && q.peek() < K){
+            int weakHot = q.poll();
+            int secondWeakHot = q.poll();
+
+            int mixHot = weakHot + (secondWeakHot * 2);
+            q.add(mixHot);
+            count++;
         }
-        
-        while(queue.peek()<K){
-            
-            int first = queue.poll();
-            
-            if(queue.peek()==null){
-                return -1;
-            }
-            
-            int second = queue.poll();
-            
-            queue.add(first+second*2);
-            answer+=1;
-        
-        }
-        
-        return answer;
+
+        if(q.peek() < K)
+            count = -1;
+
+        return count;
     }
 }
