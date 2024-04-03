@@ -59,8 +59,6 @@ class Solution {
             reverse[3] = location[1];
             
             String reverseCurrent = Arrays.toString(reverse);
-             System.out.println(i+"/"+current+"/"+tmp);
-
             location[0] = location[2];
             location[1] = location[3];
             
@@ -70,9 +68,6 @@ class Solution {
             
             visited.add(current);
             visited.add(reverseCurrent);
-            
-            
-            System.out.println(i+"/"+current);
             
             count += 1;
         }
