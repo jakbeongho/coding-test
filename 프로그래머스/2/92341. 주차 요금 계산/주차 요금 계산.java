@@ -1,79 +1,31 @@
 import java.util.*;
 
 class Solution {
+
+    public int timeToInt(String time) {
+        String temp[] = time.split(":");
+        return Integer.parseInt(temp[0])*60 + Integer.parseInt(temp[1]);
+    }
     public int[] solution(int[] fees, String[] records) {
-        
-        Map<Integer,Integer> use = new HashMap<>();
-        Map<Integer,Integer> totalTime = new HashMap<>();
-        
-        int basicTime = fees[0];
-        int basicPrice = fees[1];
-        int unitTime = fees[2];
-        int unitPrice = fees[3];
-        
-        for(int i=0;i<records.length;i++){
-            
-            String[] car = records[i].split(" ");
-            int useTime = 0;
-            int carNumber = Integer.parseInt(car[1]);
-            
-            if(car[2].equals("IN")){
-                use.put(carNumber,convertMinute(car[0]));
-            }
-            else if(car[2].equals("OUT")){
-                useTime = convertMinute(car[0]) - use.get(carNumber);
-                use.remove(carNumber);
-                totalTime.put(carNumber,totalTime.getOrDefault(carNumber,0)+useTime);
-            }
+
+        TreeMap<String, Integer> map = new TreeMap<>();
+
+        for(String record : records) {
+            String temp[] = record.split(" ");
+            int time = temp[2].equals("IN") ? -1 : 1;
+            time *= timeToInt(temp[0]);
+            map.put(temp[1], map.getOrDefault(temp[1], 0) + time);
         }
-        
-        Set<Integer> noExit = new HashSet<>(use.keySet());
-        
-        for(int carNumber : noExit) {
-            int useTime = convertMinute("23:59") - use.get(carNumber);
-            use.remove(carNumber);
-            totalTime.put(carNumber,totalTime.getOrDefault(carNumber,0)+useTime);
+        int idx = 0, ans[] = new int[map.size()];
+        for(int time : map.values()) {
+            if(time < 1) time += 1439;
+            time -= fees[0];
+            int cost = fees[1];
+            if(time > 0)
+                cost += (time%fees[2] == 0 ? time/fees[2] : time/fees[2]+1)*fees[3];
+
+            ans[idx++] = cost;
         }
-        
-        int[] answer = new int[totalTime.size()];
-        
-        TreeSet<Integer> sortCarNumber = new TreeSet<>(totalTime.keySet());
-        
-        int index = 0;
-        for(Integer carNumber : sortCarNumber){
-            answer[index] = convertMoney(totalTime.get(carNumber),basicTime,basicPrice,unitTime,unitPrice);
-            index++;
-        }
-        
-        return answer;
+        return ans;
     }
-    
-    public int convertMinute(String time){
-        
-        int result = 0;
-        
-        String[] timeArray = time.split(":");
-        
-        result = Integer.parseInt(timeArray[0])*60 + Integer.parseInt(timeArray[1]);
-        
-        return result;
-    }
-    
-    public int convertMoney(int time,int basicTime, int basicPrice, int unitTime, int unitPrice){
-        
-        int result = 0;
-        
-        if(time<=basicTime){
-            return basicPrice;
-        }
-        else{
-            time -= basicTime;
-            result += basicPrice;
-            int count = (int) Math.ceil(((double)time/unitTime));
-            result += count*unitPrice;
-        }
-        
-        return result;
-    }
-    
 }
