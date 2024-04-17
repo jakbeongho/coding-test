@@ -29,6 +29,7 @@ class Solution {
             }
         }
 
+        
         answer = answerList.stream().toArray(String[]::new);
         
         return answer;
