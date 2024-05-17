@@ -31,7 +31,7 @@ class Solution {
 		for (int i = 0; i < time.length; i++) {
 			Collections.sort(rooms);
 
-			boolean isAdd = false; // 객실이 할당되었는가
+			boolean isAdd = false;
 
 			for (int j = 0; j < rooms.size(); j++) {
 				if (time[i][0] >= rooms.get(j)) {
