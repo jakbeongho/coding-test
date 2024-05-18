@@ -38,6 +38,8 @@ class Solution {
         if(length == end){
             courseCount.put(cur,courseCount.getOrDefault(cur,0)+1);
             max = Math.max(max,courseCount.get(cur));
+            
+            return;
         }
         
         for(int i = index; i < order.length(); i++){
