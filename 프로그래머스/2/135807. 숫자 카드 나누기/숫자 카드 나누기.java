@@ -1,52 +1,86 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
     public int solution(int[] arrayA, int[] arrayB) {
         int answer = 0;
 
-        int aMin = getMin(arrayA);
-        int aGcd = getArraysGcd(arrayA, aMin);
+        Arrays.sort(arrayA);
+        Arrays.sort(arrayB);
 
-        int bMin = getMin(arrayB);
-        int bGcd = getArraysGcd(arrayB, bMin);
+        List<Integer> divisorsA = getDivisors(arrayA[0]);
+        List<Integer> divisorsB = getDivisors(arrayB[0]);
 
-        answer = getAnswer(aGcd, arrayB, answer);
-        answer = getAnswer(bGcd, arrayA, answer);
+        int aGcd = getArrayGcd(divisorsA, arrayA);
+        int bGcd = getArrayGcd(divisorsB, arrayB);
+        
+        aGcd = noDivisor(aGcd,arrayB);
+        bGcd = noDivisor(bGcd,arrayA);
+        
+        answer = Math.max(aGcd,bGcd);
+
+        if(answer==1){
+            answer =0;
+        }
 
         return answer;
     }
 
-    private static int getAnswer(int gcd, int[] array, int answer) {
-        for (int num : array) {
-            if (num % gcd == 0) {
-                return Math.max(answer, 0);
-            }
+    public List<Integer> getDivisors(int a){
+
+        List<Integer> divisors = new ArrayList<>();
+
+        for(int i=1;i<=Math.sqrt(a);i++){
+            if(a%i==0){
+                divisors.add(i);
+                divisors.add(a/i);
+            }  
         }
-        return Math.max(answer, gcd);
+        
+        Collections.sort(divisors, Collections.reverseOrder());
+        
+        return divisors;
+
     }
 
-    private static int getMin(int[] array) {
-        return Arrays.stream(array)
-                .reduce(Math::min)
-                .getAsInt();
+    public int getArrayGcd(List<Integer> divisors, int[] array){
+
+        int result = 0;
+
+        boolean check = true;
+
+        for(int i=0;i<divisors.size();i++){
+            int divisor = divisors.get(i); 
+            check = true;
+
+            for(int j=0;j<array.length;j++){
+                if(array[j]%divisor!=0){
+                    check = false;
+                    break;
+                }
+            }
+
+            if(check){
+                result = divisor;
+                break;
+            }
+
+        }
+        return result;
     }
 
-    private static int getArraysGcd(int[] array, int min) {
-        int gcd = 1;
-        for (int i = 2; i <= min; i++) {
-            if (isGcd(array, i)) {
-                gcd = i;
-            }
-        }
-        return gcd;
-    }
+    public int noDivisor(int Gcd, int[] array){
 
-    private static boolean isGcd(int[] array, int i) {
-        for (int num : array) {
-            if (num % i != 0) {
-                return false;
+        int result = Gcd;
+        boolean check = true;
+
+        for(int i=0;i<array.length;i++){
+            if(array[i]%Gcd==0){
+                result = 1;
+                break;
             }
         }
-        return true;
-    }
+
+        return result;
+    } 
+
 }
