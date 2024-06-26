@@ -5,8 +5,7 @@ class Solution {
         for(int i=0;i<numbers.length;i++){
             answer+=numbers[i];
         }
-        
-        answer= answer/(double)(numbers.length);
+        answer = answer/(double)(numbers.length);
         
         return answer;
     }
