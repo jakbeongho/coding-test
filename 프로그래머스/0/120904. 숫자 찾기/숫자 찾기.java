@@ -9,7 +9,6 @@ class Solution {
         if(temp.indexOf(c)==-1){
             return -1;
         }
-        
         answer = temp.indexOf(c)+1;
         
         return answer;
