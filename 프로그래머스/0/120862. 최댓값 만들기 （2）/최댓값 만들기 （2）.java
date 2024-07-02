@@ -12,6 +12,7 @@ class Solution {
             answer= numbers[numbers.length-2]*numbers[numbers.length-1];
         }
         
+        
         return answer;
     }
 }
